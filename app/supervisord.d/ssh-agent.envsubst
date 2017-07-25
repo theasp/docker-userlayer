@@ -1,0 +1,6 @@
+[program:ssh-agent]
+user=${USER}
+command=ssh-agent -D -a ${SSH_AUTH_SOCK}
+redirect_stderr=true
+autorestart=true
+directory=${HOME}
