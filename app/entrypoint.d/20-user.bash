@@ -15,7 +15,7 @@ export FULLNAME=$USER_GECOS
 export HOME=$USER_HOME
 export SHELL=$USER_SHELL
 
-log info "user: Creating user..."
+log debug "user: Creating user..."
 # Create the user, if it doesn't exist
 addgroup --gid ${USER_GID} ${USER_GROUP} > /dev/null
 adduser --disabled-password --home ${USER_HOME} --shell ${USER_SHELL} --uid ${USER_UID} --gid ${USER_GID} --gecos "$USER_GECOS" ${USER_NAME} > /dev/null
@@ -32,4 +32,4 @@ fi
 unset USER_PASSWORD
 export USER_PASSWORD
 
-log info "user: Done."
+log info "user: Created user $USER_NAME."
