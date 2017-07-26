@@ -1,6 +1,7 @@
 [program:ssh-agent]
+priority=20
 user=${USER}
+directory=${HOME}
 command=ssh-agent -D -a ${SSH_AUTH_SOCK}
 redirect_stderr=true
 autorestart=true
-directory=${HOME}
