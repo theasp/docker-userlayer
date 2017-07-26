@@ -35,7 +35,7 @@ function do_start {
            -e "USER_GID=$USER_GID" \
            -e "USER_HOME=$USER_HOME" \
            -e "USER_GECOS='$USER_GECOS'" \
-           theasp/userlayer
+           $IMAGE
     echo "Container $CONTAINER started."
     exit 0
   else
@@ -79,13 +79,16 @@ function do_exec {
 FUNC=$1
 shift
 
-CONTAINER="userlayer_${USER_NAME}_default"
+NAME=${NAME:-default}
+IMAGE=${IMAGE:-theasp/userlayer}
+CONTAINER="userlayer_${USER_NAME}_${NAME}"
 
 case $FUNC in
   status)    do_status;;
   start|up)  do_start;;
   stop|down) do_stop;;
   exec)      do_exec "$@";;
+  *)         do_usage;;
 esac            
 
 
