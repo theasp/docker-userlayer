@@ -12,6 +12,6 @@ ENV USER_NAME="ubuntu" \
     USER_GECOS="Unknown User" \
     ENABLE_SUPERVISOR="true" \
     ENABLE_SUDO="true" \
-    DEBUG=false 
+    DEBUG=false
 ENTRYPOINT ["/app/entrypoint.sh"]
-COPY app /app
+COPY app/ userlayer.sh /app/
