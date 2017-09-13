@@ -1,5 +1,5 @@
 log debug "ssh-agent: Configuring..."
-if [[ ${ENABLE_SSH:-true} = true ]]; then
+if [[ ${ENABLE_SSH_AGENT:-true} = true ]]; then
   export SSH_AUTH_SOCK=${SSH_AUTH_SOCK:-/tmp/.ssh-agent}
 
   if [[ -e "$SSH_AUTH_SOCK" ]]; then
