@@ -13,10 +13,15 @@ export FULLNAME=$USER_GECOS
 export HOME=$USER_HOME
 export SHELL=$USER_SHELL
 
-log debug "user: Creating user..."
-# Create the user, if it doesn't exist
-addgroup --gid ${USER_GID} ${USER_GROUP} > /dev/null
-adduser --disabled-password --home ${USER_HOME} --shell ${USER_SHELL} --uid ${USER_UID} --gid ${USER_GID} --gecos "$USER_GECOS" ${USER_NAME} > /dev/null
+if ! getent group ${USER_GROUP} > /dev/null 2>&1; then
+  log debug "user: Creating group: ${USER_GROUP}"
+  addgroup --gid ${USER_GID} ${USER_GROUP}
+fi
+
+if ! getent passwd ${USER_NAME} > /dev/null 2>&1; then
+  log debug "user: Creating user: ${USER_NAME}"
+  adduser --disabled-password --home ${USER_HOME} --shell ${USER_SHELL} --uid ${USER_UID} --gid ${USER_GID} --gecos "$USER_GECOS" ${USER_NAME}
+fi
 
 # Make sure various directories exist
 mkdir -p /app/log
