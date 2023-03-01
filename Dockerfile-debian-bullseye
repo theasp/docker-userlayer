@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:bullseye
 ARG http_proxy
 MAINTAINER Andrew Phillips <theasp@gmail.com>
 RUN set -ex; \
