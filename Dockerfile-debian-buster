@@ -1,9 +1,6 @@
 FROM debian:buster
 ARG http_proxy
 MAINTAINER Andrew Phillips <theasp@gmail.com>
-RUN set -ex; \
-  apt-get update -q; \
-  apt-get install -q -y supervisor sudo openssh-client gettext-base
 ENV USER_NAME="user" \
     USER_UID="1000" \
     USER_GID="1000" \
@@ -15,4 +12,7 @@ ENV USER_NAME="user" \
     ENABLE_SSH_AGENT="true" \
     DEBUG=false
 ENTRYPOINT ["/app/entrypoint.sh"]
-COPY app/ userlayer.sh /app/
+RUN set -ex; \
+  apt-get update -q; \
+  apt-get install -q -y supervisor sudo openssh-client gettext-base
+COPY app/ /app/
