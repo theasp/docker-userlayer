@@ -1,0 +1,102 @@
+---
+version: 2
+jobs:
+  build_ubuntu18.04:
+    docker:
+      - image: docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run: |
+          docker image build -t theasp/userlayer:ubuntu18.04 -f Dockerfile-ubuntu-18.04 .
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+              docker image ls
+              docker push theasp/userlayer:ubuntu18.04
+            fi
+  build_ubuntu20.04:
+    docker:
+      - image: docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run: |
+          docker image build -t theasp/userlayer:ubuntu20.04 -f Dockerfile-ubuntu-20.04 .
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+              docker image ls
+              docker push theasp/userlayer:ubuntu20.04
+            fi
+  build_ubuntu22.04:
+    docker:
+      - image: docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run: |
+          docker image build -t theasp/userlayer:ubuntu22.04 -f Dockerfile-ubuntu-22.04 .
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+              docker image ls
+              docker push theasp/userlayer:ubuntu22.04
+            fi
+  build_debian-buster:
+    docker:
+      - image: docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run: |
+          docker image build -t theasp/userlayer:debian-buster -f Dockerfile-debian-buster .
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+              docker image ls
+              docker push theasp/userlayer:debian-buster
+            fi
+  build_debian-bullseye:
+    docker:
+      - image: docker
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run: |
+          docker image build -t theasp/userlayer:debian-bullseye -f Dockerfile-debian-bullseye .
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+              docker image ls
+              docker push theasp/userlayer:debian-bullseye
+            fi
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build_ubuntu18.04
+      - build_ubuntu20.04
+      - build_ubuntu22.04
+      - build_debian-buster
+      - build_debian-bullseye
+  weekly:
+    triggers:
+      - schedule:
+          cron: "0 12 * * 2"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - build_ubuntu18.04
+      - build_ubuntu20.04
+      - build_ubuntu22.04
+      - build_debian-buster
+      - build_debian-bullseye
